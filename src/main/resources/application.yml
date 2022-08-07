@@ -1,0 +1,4 @@
+spring:
+  bot:
+    name: ${BOT_NAME:SonyGamesBot}
+    token: ${BOT_TOKEN:5555037058:AAH99faxKNNaXYwxpvmfsUJCGgSCOzgti0Y}
