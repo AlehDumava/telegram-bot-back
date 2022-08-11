@@ -1,0 +1,24 @@
+databaseChangeLog:
+  - changeSet:
+      id: create-games-table
+      author: Aleh Dumava
+      changes:
+        - createTable:
+            tableName: games
+            columns:
+              - column:
+                  name: id
+                  type: bigint
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: game
+                  type: varchar(200)
+              - column:
+                  name: developer
+                  type: varchar(200)
+              - column:
+                  name: rating
+                  type: varchar(200)

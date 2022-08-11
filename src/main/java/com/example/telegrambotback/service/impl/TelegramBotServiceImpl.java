@@ -2,18 +2,23 @@ package com.example.telegrambotback.service.impl;
 
 import com.example.telegrambotback.config.TelegramBotConfig;
 import com.example.telegrambotback.service.TelegramBotService;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class TelegramBotServiceImpl extends TelegramLongPollingBot implements TelegramBotService {
 
     private final TelegramBotConfig telegramBotConfig;
+    private final WeatherServiceImpl weatherService;
 
     @Override
     public String getBotUsername() {
@@ -30,35 +35,46 @@ public class TelegramBotServiceImpl extends TelegramLongPollingBot implements Te
         if (update.hasMessage() && update.getMessage().hasText()) {
             String messageText = update.getMessage().getText();
 
-            long userId = update.getMessage().getChatId();
+            long chatId = update.getMessage().getChatId();
+            String userName = update.getMessage().getChat().getFirstName();
 
             switch (messageText) {
                 case "/start":
-                    startCommandReceived(userId, update.getMessage().getChat().getFirstName());
+                    startCommandReceived(chatId, userName);
+                    break;
+                case "/weather":
+                    String jsonString = weatherService.getWeather();
+                    sendMessage(chatId, "The current weather is: " + "\n" +
+                        weatherService.parse(jsonString));
+
+                    log.info("Send weather to user: " + userName + " " +
+                        LocalDateTime.now().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME));
                     break;
                 default:
-                    sendMessage(userId, "Sorry, this command not recognized!");
+                    sendMessage(chatId, "Sorry, this command was not recognized!");
             }
         }
     }
 
     @Override
-    public void startCommandReceived(long userId, String userName) {
+    public void startCommandReceived(long chatId, String userName) {
         String answer = "Hi, " + userName + ", nice to meet you!";
-        sendMessage(userId, answer);
+        sendMessage(chatId, answer);
+        log.info("Replied to user: " + userName + " " +
+            LocalDateTime.now().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME));
     }
 
     @Override
-    public void sendMessage(long userId, String textToSend) {
-        SendMessage message = new SendMessage();
-        message.setChatId(String.valueOf(userId));
-        message.setText(textToSend);
+    public void sendMessage(long chatId, String textToSend) {
+        SendMessage sendMessage = new SendMessage();
+            sendMessage.setChatId(String.valueOf(chatId));
+            sendMessage.setText(textToSend);
 
         try {
-            execute(message);
+            execute(sendMessage);
 
         } catch (TelegramApiException e) {
-            e.printStackTrace();
+            log.error("Error occurred: " + e.getMessage());
         }
     }
 }

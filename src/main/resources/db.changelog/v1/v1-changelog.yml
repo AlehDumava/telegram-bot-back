@@ -1,0 +1,5 @@
+databaseChangeLog:
+  - include:
+      file: classpath:/db.changelog/v1/create/08-08-2022-create-games-table.yml
+  - include:
+      file: classpath:/db.changelog/v1/create/08-08-2022-create-genres-table.yml

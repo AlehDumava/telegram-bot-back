@@ -1,0 +1,29 @@
+databaseChangeLog:
+  - changeSet:
+      id: create-genres-table
+      author: Aleh Dumava
+      changes:
+        - createTable:
+            tableName: genres
+            columns:
+              - column:
+                  name: id
+                  type: bigint
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: games_id
+                  type: bigint
+                  constraints:
+                    nullable: false
+                    foreignKeyName: genres_games_id_fk
+                    referencedTableName: games
+                    referencedColumnNames: id
+              - column:
+                  name: genre
+                  type: varchar(200)
+              - column:
+                  name: rating
+                  type: varchar(200)
