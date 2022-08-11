@@ -17,11 +17,15 @@ import java.net.http.HttpResponse;
 import java.net.http.HttpResponse.BodyHandlers;
 import java.time.Duration;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
 public class WeatherServiceImpl implements WeatherService {
+
+    @Value(value = "${environment.yandex.key}")
+    private String KEY;
 
     @Override
     public String getWeather() {
@@ -31,7 +35,7 @@ public class WeatherServiceImpl implements WeatherService {
                 .uri(new URI("https://api.weather.yandex.ru/v1/informers"))
                 .header("lat", "55.1904")
                 .header("lon", "30.2049")
-                .header("X-Yandex-API-Key", "3d511c06-5140-477b-882e-4d389f9a48a2")
+                .header("X-Yandex-API-Key", KEY)
                 .timeout(Duration.of(10, SECONDS))
                 .GET()
                 .build();
