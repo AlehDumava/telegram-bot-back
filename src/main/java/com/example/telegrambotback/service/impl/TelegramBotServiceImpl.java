@@ -83,9 +83,12 @@ public class TelegramBotServiceImpl extends TelegramLongPollingBot implements Te
                 case "/weather":
                     String jsonString = weatherService.getWeather();
                     sendMessage(chatId, "The current weather is: " + "\n" +
-                            weatherService.parse(jsonString));
+                            weatherService.parseWeatherCurrent(jsonString));
 
-                    log.info("Send weather to user: " + userName + " " +
+                    sendMessage(chatId, "The forecast weather is: " + "\n" +
+                        weatherService.parseWeatherForecast(jsonString));
+
+                    log.info("Send weather to user: " + userName + " == " +
                             LocalDateTime.now().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME));
                     break;
 
