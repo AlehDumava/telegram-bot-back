@@ -16,13 +16,12 @@ public class TelegramBotInitializerConfig {
     TelegramBotServiceImpl telegramBotServiceImpl;
 
     @EventListener({ContextRefreshedEvent.class})
-    public  void init() throws TelegramApiException {
+    public void init() throws TelegramApiException {
         TelegramBotsApi telegramBotsApi = new TelegramBotsApi(DefaultBotSession.class);
 
         try {
             telegramBotsApi.registerBot(telegramBotServiceImpl);
-        }
-        catch (TelegramApiException e) {
+        } catch (TelegramApiException e) {
             log.error("Error occurred: " + e.getMessage());
         }
     }

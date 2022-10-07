@@ -13,3 +13,5 @@ environment:
   bot:
     name: ${BOT_NAME:}
     token: ${BOT_TOKEN:}
+  yandex:
+    key: ${KEY:}

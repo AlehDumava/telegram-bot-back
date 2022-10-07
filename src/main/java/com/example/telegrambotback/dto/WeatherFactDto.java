@@ -1,11 +1,13 @@
-package com.example.telegrambotback.entity;
+package com.example.telegrambotback.dto;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.RequiredArgsConstructor;
+import lombok.NoArgsConstructor;
 
 @Data
-@RequiredArgsConstructor
-public class WeatherFact {
+@NoArgsConstructor
+@AllArgsConstructor
+public class WeatherFactDto {
 
     private int obs_time;
     private int temp;
