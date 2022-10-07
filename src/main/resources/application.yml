@@ -11,7 +11,7 @@ spring:
     change-log: classpath:/db.changelog/changelog-master.yml
 environment:
   bot:
-    name: ${BOT_NAME:}
-    token: ${BOT_TOKEN:}
+    name: ${BOT_NAME}
+    token: ${BOT_TOKEN}
   yandex:
-    key: ${KEY:}
+    key: ${KEY}
