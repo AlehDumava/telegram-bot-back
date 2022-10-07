@@ -17,7 +17,7 @@ repositories {
 	mavenCentral()
 	maven { url 'https://repo.spring.io/milestone' }
 	maven { url 'https://repo.spring.io/snapshot' }
-	sourceCompatibility = '14'
+	sourceCompatibility = '17'
 }
 
 dependencies {
