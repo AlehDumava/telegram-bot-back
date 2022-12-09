@@ -1,0 +1,1 @@
+web: java -jar build/libs/telegram-bot-back-0.0.1-SNAPSHOT.jar
