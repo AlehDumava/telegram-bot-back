@@ -2,12 +2,12 @@ package com.example.telegrambotback.service.impl;
 
 import com.example.telegrambotback.config.TelegramBotConfig;
 import com.example.telegrambotback.service.TelegramBotService;
-
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
-
+import java.util.Optional;
+import java.util.OptionalDouble;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -47,7 +47,8 @@ public class TelegramBotServiceImpl extends TelegramLongPollingBot implements Te
             this.execute(new SetMyCommands(listOfCommands, new BotCommandScopeDefault(), null));
         } catch (TelegramApiException e) {
             log.error("Error setting bot's command list: " +
-                    LocalDateTime.now().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME));
+                    LocalDateTime.now().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME) + " " +
+                e.getMessage());
         }
     }
 
@@ -68,6 +69,13 @@ public class TelegramBotServiceImpl extends TelegramLongPollingBot implements Te
 
             long chatId = update.getMessage().getChatId();
             String userName = update.getMessage().getChat().getFirstName();
+
+            String longitude = update.getMessage().getLocation().getLongitude().toString();
+            String latitude = update.getMessage().getLocation().getLongitude().toString();
+
+            log.info("Current user location: " + userName + " == " +
+                LocalDateTime.now().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME) +
+                " You current location: lat = " + latitude + ", " + "lon = " + longitude);
 
             switch (messageText) {
                 case "/start":
@@ -93,7 +101,12 @@ public class TelegramBotServiceImpl extends TelegramLongPollingBot implements Te
                     break;
 
                 default:
-                    sendMessage(chatId, "Sorry, this command was not recognized!");
+                    sendMessage(chatId, "Sorry, this command was not recognized! " +
+                        " You current location: lat = " + latitude + ", " + "lon = " + longitude);
+
+                    log.info("Send location to user: " + userName + " == " +
+                        LocalDateTime.now().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME) +
+                        " You current location: lat = " + latitude + ", " + "lon = " + longitude);
             }
         }
     }

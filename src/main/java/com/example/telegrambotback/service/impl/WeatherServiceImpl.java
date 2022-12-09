@@ -2,8 +2,8 @@ package com.example.telegrambotback.service.impl;
 
 import static java.time.temporal.ChronoUnit.SECONDS;
 
+import com.example.telegrambotback.config.TelegramBotConfig;
 import com.example.telegrambotback.dto.WeatherDto;
-import com.example.telegrambotback.dto.WeatherForecastDto;
 import com.example.telegrambotback.service.WeatherService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
@@ -17,25 +17,23 @@ import java.net.http.HttpResponse;
 import java.net.http.HttpResponse.BodyHandlers;
 import java.time.Duration;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
 public class WeatherServiceImpl implements WeatherService {
 
-    @Value(value = "${environment.yandex.key}")
-    private String key;
+    private final TelegramBotConfig telegramBotConfig;
 
     @Override
     public String getWeather() {
 
         try {
             HttpRequest request = HttpRequest.newBuilder()
-                .uri(new URI("https://api.weather.yandex.ru/v1/informers"))
+                .uri(new URI(telegramBotConfig.getWeatherUrl()))
                 .header("lat", "55.1904")
                 .header("lon", "30.2049")
-                .header("X-Yandex-API-Key", key)
+                .header("X-Yandex-API-Key", telegramBotConfig.getKey())
                 .timeout(Duration.of(10, SECONDS))
                 .GET()
                 .build();

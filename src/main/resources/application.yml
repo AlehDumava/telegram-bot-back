@@ -9,9 +9,8 @@ spring:
   liquibase:
     enabled: true
     change-log: classpath:/db.changelog/changelog-master.yml
-environment:
-  bot:
-    name: ${BOT_NAME:}
-    token: ${BOT_TOKEN:}
-  yandex:
-    key: ${KEY:}
+config:
+  botName: ${BOT_NAME:}
+  botToken: ${BOT_TOKEN:}
+  key: ${KEY_YANDEX:}
+  weatherUrl: ${URL:}

@@ -1,19 +1,21 @@
 package com.example.telegrambotback.config;
 
-import lombok.Data;
-import org.springframework.beans.factory.annotation.Value;
+import lombok.Getter;
+import lombok.Setter;
+import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.env.Environment;
 
-@Data
+@Getter
+@Setter
 @Configuration
+@ConfigurationProperties(prefix = "config")
 public class TelegramBotConfig {
 
-    public Environment environment;
-
-    @Value(value = "${environment.bot.name}")
     private String botName;
 
-    @Value(value = "${environment.bot.token}")
     private String botToken;
+
+    private String key;
+
+    private String weatherUrl;
 }
